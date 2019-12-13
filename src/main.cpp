@@ -96,7 +96,7 @@ void update()
         {
             i.update();
         }
-        if(walls.front().get_position() < -wall_width)
+        if(walls.front().get_position() < - 2 * wall_width)
         {
             std::cout << ++score << std::endl;
             walls.pop_front();

@@ -22,7 +22,6 @@ class Wall
         float get_width();
         float get_position();
         float get_hole_position();
-        float get_hole_height();
         bool position_conflicts(Player &p);
         void update();
 };

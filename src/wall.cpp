@@ -22,11 +22,6 @@ float Wall::get_hole_position()
     return hole_pos;
 }
 
-float Wall::get_hole_height()
-{
-    return hole_tolerance * 2;
-}
-
 bool Wall::position_conflicts(Player &p)
 {
     if(abs(position) > width / 2)

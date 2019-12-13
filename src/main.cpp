@@ -2,41 +2,80 @@
 #include <list>
 #include <memory>
 #include <random>
+#include <simple2d.h>
 #include "player.h"
 #include "wall.h"
 
-const float interval = 0.25;
-const float game_speed = 1;
-const float gravity = 3;
-const int game_width = 5;
-const int game_height = 10;
-const int spawn_interval = 4;
-const float wall_width = 1;
-const float hole_height = 3;
+const float interval = 60.0/1000; // 60fps
+const float game_speed = 100;
+const int spawn_interval = 100;
+
+const float gravity = 70;
+
+const float wall_width = 100;
+const float hole_height = 160;
+
+const int ground_thickness = 100;
+const int screen_offset = 100;
+const int game_width = 700;
+const int game_height = 500;
+const int window_x = 600;
+const int window_y = 600;
+
+S2D_Window *window;
+
+int convert_x(float x); // converts coordinates
+int convert_y(float y); // for display window
+void update();
+void render();
+void on_key(S2D_Event e);
+
+int main()
+{
+    srand(time(NULL));
+    window = S2D_CreateWindow
+    (
+        "BlockJump",
+        window_x, window_y,
+        update, render,
+        0
+    );
+    window->background.r = 1;
+    window->background.g = 1;
+    window->background.b = 1;
+    window->on_key = on_key;
+    S2D_Show(window);
+    S2D_FreeWindow(window);
+    return 0;
+}
+
+int convert_x(float x)
+{
+    return round(screen_offset + x);
+}
+
+int convert_y(float y)
+{
+    return round((game_height - y) / game_height * window_y);
+}
 
 int timer = 0;
 int score = 0;
 
 std::unique_ptr<Player> player(new
-    Player(interval, -gravity, (float) game_height / 2, gravity)
+    Player(interval, -gravity, (float) game_height / 2, 2 * gravity,
+           - 1.85 * gravity, game_height)
 );
+
 std::list<Wall> walls;
 
-bool loop(); // returns false when the game is lost
-
-int main()
+void update()
 {
-    srand(time(NULL));
-    while(loop());
-}
-
-bool loop()
-{
-    if(walls.size() < game_width && timer == 0)
+    if(walls.size() < 8 && timer == 0)
     {
         walls.emplace_back(interval, -game_speed, wall_width, game_width,
                            rand() % game_height, hole_height / 2);
-        timer = 5;
+        timer = spawn_interval;
     }
 
     auto cur = walls.begin();
@@ -47,37 +86,70 @@ bool loop()
 
     if(player->has_crashed() || cur->position_conflicts(*player))
     {
-        std::cout << "YOU LOSE!" << std::endl;
-        return false;
+        std::cout << "FINAL SCORE: " << score << std::endl;
+        S2D_Close(window);
     }
-
-    std::cout << std::endl << std::endl;
-    std::cout << "Score: " << score++ << std::endl;
-    std::cout << std::endl;
-    std::cout << "Height: " << player->get_height() << std::endl;
-    std::cout << "Speed: " << player->get_speed() << std::endl;
-    std::cout << std::endl;
-    std::cout << "Distance to wall: ";
-    std::cout << cur->get_position() - wall_width;
-    std::cout << std::endl;
-    std::cout << "Wall hole position: ";
-    std::cout << cur->get_hole_position() << std::endl;
-    std::cout << std::endl;
-    std::cout << "Jump? ";
-
-    int x;
-    std::cin >> x;
-    if(x)
-        player->set_speed(gravity);
-
-    player->update();
-    for(auto &i : walls)
-        i.update();
-    if(walls.front().get_position() < wall_width)
+    else
     {
-        walls.pop_front();
-    }
+        player->update();
+        for(auto &i : walls)
+        {
+            i.update();
+        }
+        if(walls.front().get_position() < -wall_width)
+        {
+            std::cout << ++score << std::endl;
+            walls.pop_front();
+        }
 
-    --timer;
-    return true;
+        --timer;
+    }
+}
+
+void render()
+{
+    // draw player
+    int player_x = convert_x(0);
+    int player_y = convert_y(player->get_height());
+    S2D_DrawQuad
+    (
+        player_x - 20, player_y + 20, 1, 0, 0, 1,
+        player_x + 20, player_y + 20, 1, 0, 0, 1,
+        player_x + 20, player_y - 20, 1, 0, 0, 1,
+        player_x - 20, player_y - 20, 1, 0, 0, 1
+    );
+
+    // draw walls
+    for(auto &i : walls)
+    {
+        int wall_x0 = convert_x(i.get_position() - i.get_width() / 2);
+        int wall_x1 = convert_x(i.get_position() + i.get_width() / 2);
+        int wall_yh0 = convert_y(i.get_hole_position() + hole_height / 2);
+        int wall_yh1 = convert_y(i.get_hole_position() - hole_height / 2);
+        int wall_y0 = 0;
+        int wall_y1 = window_y;
+        S2D_DrawQuad
+        (
+            wall_x0, wall_y0,  0, 0, 0.7, 1,
+            wall_x0, wall_yh0, 0, 0, 0.7, 1,
+            wall_x1, wall_yh0, 0, 0, 0.7, 1,
+            wall_x1, wall_y0,  0, 0, 0.7, 1
+        );
+        S2D_DrawQuad
+        (
+            wall_x0, wall_yh1, 0, 0, 0.7, 1,
+            wall_x0, wall_y1,  0, 0, 0.7, 1,
+            wall_x1, wall_y1,  0, 0, 0.7, 1,
+            wall_x1, wall_yh1, 0, 0, 0.7, 1
+        );
+    }
+}
+
+void on_key(S2D_Event e)
+{
+    switch(e.type)
+    {
+        case S2D_KEY_DOWN:
+            player->set_speed(1.5 * gravity);
+    }
 }

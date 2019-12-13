@@ -7,7 +7,7 @@ Made for a COMP6065 (Artificial Intelligence) group project.
 ## Disclaimers
 - Code quality probably stinks worse than a septic tank
 - The game window steals focus every time it opens
-- There is no way of stoping the program outside of killing it or waiting for it to finish
+- There is no way of stopping the program outside of killing it or waiting for it to finish
 
 ## Learning method
 

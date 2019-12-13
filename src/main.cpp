@@ -15,7 +15,6 @@ const float gravity = 70;
 const float wall_width = 100;
 const float hole_height = 160;
 
-const int ground_thickness = 100;
 const int screen_offset = 100;
 const int game_width = 700;
 const int game_height = 500;
@@ -51,7 +50,7 @@ int main()
 
 int convert_x(float x)
 {
-    return round(screen_offset + x);
+    return screen_offset + round(x / screen_width);
 }
 
 int convert_y(float y)

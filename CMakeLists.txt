@@ -11,8 +11,10 @@ find_package(Threads REQUIRED)
 
 add_executable(BlockJumpAI
     src/main.cpp
+    src/game.cpp
     src/player.cpp
     src/wall.cpp
+    src/ai.cpp
 )
 
 target_link_libraries(BlockJumpAI

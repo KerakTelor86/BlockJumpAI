@@ -9,5 +9,6 @@ int main()
         Game::reset();
         Game::train(ai);
     }
+    delete ai;
     return 0;
 }

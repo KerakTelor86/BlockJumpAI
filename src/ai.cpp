@@ -4,6 +4,11 @@
 AI::AI(std::size_t _n, float _alpha) :
     n(_n), theta(_n), bias(0), alpha(_alpha)
 {
+    theta[0] = -0.002;
+    theta[1] = 0.2599;
+    theta[2] = -0.304402;
+    theta[3] = -0.01558;
+    bias = 0.0009;
 }
 
 bool AI::convert(float y)

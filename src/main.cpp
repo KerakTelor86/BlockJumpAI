@@ -3,8 +3,8 @@
 int main()
 {
     srand(time(NULL));
-    AI *ai = new AI(4, 0.01);
-    for(int i = 0; i < 100; ++i)
+    AI *ai = new AI(4, 0.0001);
+    for(int i = 0; i < 1000; ++i)
     {
         Game::reset();
         Game::train(ai);

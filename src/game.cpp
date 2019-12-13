@@ -57,8 +57,8 @@ void Game::update()
         cur = std::next(walls.begin());
     }
 
-    if(ai->predict({cur->get_position(), cur->get_hole_position(),
-       player->get_height(), player->get_speed()}))
+    if(ai->predict({1 + cur->get_position(), 1 + cur->get_hole_position(),
+       1 + player->get_height(), 1 + player->get_speed()}))
     {
         player->set_speed(1.5 * gravity);
     }

@@ -50,7 +50,7 @@ int main()
 
 int convert_x(float x)
 {
-    return screen_offset + round(x / screen_width);
+    return screen_offset + round(x / game_width * window_x);
 }
 
 int convert_y(float y)

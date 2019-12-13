@@ -34,3 +34,6 @@
 # Vim swap files
 *.swo
 *.swp
+
+# Build folder
+build/*

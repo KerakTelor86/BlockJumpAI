@@ -50,7 +50,7 @@ int main()
 
 int convert_x(float x)
 {
-    return screen_offset + round(x / screen_width);
+    return screen_offset + round(x / game_width * window_x);
 }
 
 int convert_y(float y)
@@ -149,6 +149,7 @@ void on_key(S2D_Event e)
     switch(e.type)
     {
         case S2D_KEY_DOWN:
-            player->set_speed(1.5 * gravity);
+            // player->set_speed(1.5 * gravity);
+            std::cout << "Learning..." << std::endl;
     }
 }

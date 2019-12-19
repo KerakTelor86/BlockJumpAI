@@ -10,6 +10,12 @@ int Game::convert_y(float y)
     return round((game_height - y) / game_height * window_y);
 }
 
+int Game::random_height()
+{
+    int range = game_height - hole_height;
+    return hole_height / 2 + rand() % range;
+}
+
 void Game::reset()
 {
     ai = NULL;
@@ -47,7 +53,7 @@ void Game::update()
     if(walls.size() < 8 && timer == 0)
     {
         walls.emplace_back(interval, -game_speed, wall_width, game_width,
-                           rand() % game_height, hole_height / 2);
+                           random_height(), hole_height / 2);
         timer = spawn_interval;
     }
 
@@ -57,8 +63,8 @@ void Game::update()
         cur = std::next(walls.begin());
     }
 
-    if(ai->predict({1 + cur->get_position(), 1 + cur->get_hole_position(),
-       1 + player->get_height(), 1 + player->get_speed()}))
+    if(ai->predict({cur->get_position(), cur->get_hole_position(),
+       player->get_height(), player->get_speed()}))
     {
         player->set_speed(1.5 * gravity);
     }

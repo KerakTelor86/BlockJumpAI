@@ -3,7 +3,7 @@
 int main()
 {
     srand(time(NULL));
-    AI *ai = new AI(4, 0.0001);
+    AI *ai = new AI(4, 1e-6);
     Game::reset();
     Game::train(ai);
     delete ai;

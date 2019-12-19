@@ -10,6 +10,12 @@ int Game::convert_y(float y)
     return round((game_height - y) / game_height * window_y);
 }
 
+int Game::random_height()
+{
+    int range = game_height - hole_height;
+    return hole_height / 2 + rand() % range;
+}
+
 void Game::reset()
 {
     ai = NULL;
@@ -24,30 +30,32 @@ void Game::reset()
     score = 0;
     player = new Player(interval, -gravity, (float) game_height / 2,
                         2 * gravity, - 1.85 * gravity, game_height);
-    window = S2D_CreateWindow
-    (
-        "BlockJump",
-        window_x, window_y,
-        update, render,
-        0
-    );
-    window->background.r = 1;
-    window->background.g = 1;
-    window->background.b = 1;
+    //window = S2D_CreateWindow
+    //(
+    //    "BlockJump",
+    //    window_x, window_y,
+    //    update, render,
+    //    0
+    //);
+    //window->background.r = 1;
+    //window->background.g = 1;
+    //window->background.b = 1;
+    //window->fps_cap = 60 * speed_multiplier;
+    //window->vsync = false;
 }
 
 void Game::train(AI *_ai)
 {
     ai = _ai;
-    S2D_Show(window);
+    while(update());
 }
 
-void Game::update()
+bool Game::update()
 {
     if(walls.size() < 8 && timer == 0)
     {
         walls.emplace_back(interval, -game_speed, wall_width, game_width,
-                           rand() % game_height, hole_height / 2);
+                           random_height(), hole_height / 2);
         timer = spawn_interval;
     }
 
@@ -57,8 +65,8 @@ void Game::update()
         cur = std::next(walls.begin());
     }
 
-    if(ai->predict({1 + cur->get_position(), 1 + cur->get_hole_position(),
-       1 + player->get_height(), 1 + player->get_speed()}))
+    if(ai->predict({cur->get_position(), cur->get_hole_position(),
+       player->get_height(), player->get_speed()}))
     {
         player->set_speed(1.5 * gravity);
     }
@@ -71,7 +79,7 @@ void Game::update()
             ai->fix(true);  // should've jumped, didn't
 
         std::cout << "FINAL SCORE: " << score << std::endl;
-        S2D_Close(window);
+        return false;
     }
     else
     {
@@ -82,12 +90,14 @@ void Game::update()
         }
         if(walls.front().get_position() < - 2 * wall_width)
         {
-            std::cout << ++score << std::endl;
+            //std::cout << ++score << std::endl;
+            ++score;
             walls.pop_front();
         }
 
         --timer;
     }
+    return true;
 }
 
 void Game::render()

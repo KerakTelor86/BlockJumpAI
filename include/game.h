@@ -28,9 +28,10 @@ namespace Game
     static const int window_x = 600;
     static const int window_y = 600;
 
+    int random_height();
     int convert_x(float x); // converts coordinates
     int convert_y(float y); // for display window
-    void update();
+    bool update();
     void render();
 
     static S2D_Window *window = NULL;
@@ -42,7 +43,6 @@ namespace Game
 
     void train(AI *_ai);
     void reset();
-    int loop();
 }
 
 #endif

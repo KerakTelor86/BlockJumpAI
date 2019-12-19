@@ -92,6 +92,8 @@ bool Game::update()
         {
             //std::cout << ++score << std::endl;
             ++score;
+            if(score % 5000 == 0)
+                std::cout << "Score: " << score << std::endl;
             walls.pop_front();
         }
 

@@ -4,10 +4,10 @@
 AI::AI(std::size_t _n, float _alpha) :
     n(_n), theta(_n), bias(0), alpha(_alpha)
 {
-    theta[0] = 0.000354;
-    theta[1] = 0.006931;
-    theta[2] = -0.00607358;
-    theta[3] = -0.0046599;
+    theta[0] = 0.000462;
+    theta[1] = 0.006851;
+    theta[2] = -0.00620365;
+    theta[3] = -0.0046305;
     bias = 6.5e-05;
 }
 

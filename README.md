@@ -1,6 +1,6 @@
 # BlockJumpAI
 
-A Flappy Bird clone that plays itself and gets better with time.
+A Flappy Bird clone that plays itself.
 
 Made for a COMP6065 (Artificial Intelligence) group project.
 

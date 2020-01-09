@@ -9,6 +9,27 @@ Made for a COMP6065 (Artificial Intelligence) group project.
 - The game window steals focus every time it opens
 - There is no way of stopping the program outside of killing it or waiting for it to finish
 
+## Branches
+- *preset-values*: Default branch, pre-trained instance.
+- *training*: No graphics for faster training.
+- *master*: Live training, buggy
+- *gui*: Play it yourself
+- *ai*: Useless old branch
+
+## Running this project
+***Windows is not supported!***
+
+Requirements:
+- CMake version 3.14 or better
+- GCC with C++17 support
+- [simple2d](https://github.com/simple2d/simple2d)
+
+Compilation:
+1. Clone the repo into a folder
+2. Navigate to said folder
+3. Run CMake on it
+4. Execute the compiled file
+
 ## Learning method
 
 4-variable Linear Regression

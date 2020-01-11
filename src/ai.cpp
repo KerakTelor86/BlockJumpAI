@@ -51,7 +51,7 @@ void AI::fix(bool ans)
         theta[i] += error * alpha * x[i];
         std::cout << theta[i] << std::endl;
     }
-    
+
     bias += error * alpha;
     std::cout << bias << std::endl;
 }

@@ -32,7 +32,7 @@ Compilation:
 
 ## Learning method
 
-4-variable Linear Regression
+4-variable Single-layer Perceptron
 
 The variables are:
 1. Distance to the next wall
@@ -42,9 +42,9 @@ The variables are:
 
 ### The actual process
 The AI makes a choice every frame and stores a history of the latest 1000 (arbitrarily chosen number) choices it made.
-Every time the AI crashes itself into something, it finds the latest non-optimal choice it made and uses it as a data point.
+Every time the AI crashes itself into something, it finds the latest non-optimal choice it made and uses it for SGD.
 
-e.g. When the AI crashes above the pipe hole, it looks through its history of choices and finds the latest jump it made, and uses that as an SGD data point.
+e.g. When the AI crashes above the hole in the pipe, it looks through its history of choices and finds the latest jump it made, and uses that as an SGD data point.
 
 
 ## Libraries used
